@@ -20,11 +20,27 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         Movedir = move.action.ReadValue<Vector2>();
-        JumpDir = jump.action.ReadValue<Vector2>();
+
+    }
+
+    private void OnJump(InputValue value)
+    {
+        rb.AddForce(0, jumpForce, 0, ForceMode.Impulse);
+
+        
+
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector3(Movedir.x * moveSpeed, JumpDir.x * jumpForce, Movedir.y* moveSpeed);    
+        Gravity();
+        rb.linearVelocity = new Vector3(Movedir.x * moveSpeed, 0, Movedir.y* moveSpeed);    
     }
+
+    private void Gravity(){
+        rb.AddForce(Vector3.down * 9.82f, ForceMode.Acceleration);
+    }
+
+
+    
 }
