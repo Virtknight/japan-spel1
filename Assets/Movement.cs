@@ -8,10 +8,16 @@ public class Movement : MonoBehaviour
     public Rigidbody rb;
     public float moveSpeed;
 
-    public float jumpForce;
+    public float jumpForce = 10f;
+
+    public float gravitationScale = 1;
+    public float gravity;
+    public float raycastlength;
 
     private Vector2 Movedir;
     private Vector2 JumpDir;
+
+    public Camera cam;
 
 
     public InputActionReference move;
@@ -21,26 +27,49 @@ public class Movement : MonoBehaviour
     {
         Movedir = move.action.ReadValue<Vector2>();
 
+
     }
+
+    
 
     private void OnJump(InputValue value)
     {
-        rb.AddForce(0, jumpForce, 0, ForceMode.Impulse);
-
+        if(GroundCheck()){
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+        }
         
 
     }
 
     private void FixedUpdate()
     {
-        Gravity();
-        rb.linearVelocity = new Vector3(Movedir.x * moveSpeed, 0, Movedir.y* moveSpeed);    
+        HandleGravity();
     }
 
-    private void Gravity(){
-        rb.AddForce(Vector3.down * 9.82f, ForceMode.Acceleration);
+    void HandleGravity()
+    {
+        bool isGrounded = GroundCheck();
+        Debug.Log(GroundCheck());
+        if (!isGrounded)
+        {
+                rb.AddForce(new Vector3(0, -gravity * gravitationScale, 0), ForceMode.Force);
+            }
+            
+        }
+
+        // SetYLevelAccordingToGravity();
+
+
+
+            bool GroundCheck(){
+        return Physics.Raycast(rb.position, Vector3.down, raycastlength);
+        
     }
+    }
+
+
 
 
     
-}
+
