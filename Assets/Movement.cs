@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -5,26 +6,29 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
 
+    [Header("References")]
     public Rigidbody rb;
+    public Camera cam;
+    public Transform orientation;
+    public InputActionReference move;
 
-    public float moveSpeed;
-    public float SprintIncrease;
-
-    public float jumpForce = 10f;
+    [Header("Gravity-variables")]
 
     public float gravitationScale = 1;
     public float gravity;
     public float raycastlength;
 
+    [Header("Other-variables")]
+
+
+    public float moveSpeed;
+
+    public float jumpForce = 10f;
+
     private Vector2 Movevalue;
-
-    public Camera cam;
-
-    public Transform orientation;
-
-    public InputActionReference move;
-
     private float timer;
+
+    [SerializeField] private Running running;
 
 
     private void Update()
@@ -37,8 +41,8 @@ public class Movement : MonoBehaviour
     {
         HandleGravity();
         Move();
-
-        if(GroundCheck()){
+        if (GroundCheck())
+        {
             timer = 0.5f;
         }
 
@@ -46,7 +50,7 @@ public class Movement : MonoBehaviour
     }
 
 
-    private void OnJump(InputValue value)
+    public void OnJump(InputAction.CallbackContext context)
     {
         if (timer > 0)
         {
@@ -71,8 +75,15 @@ public class Movement : MonoBehaviour
     }
     void Move()
     {
+        var targetSpeed = running.isSprinting ? running.speed * running.multiplier : running.speed;
+        running.currentSpeed = Mathf.MoveTowards(running.currentSpeed, targetSpeed, running.acceleration * Time.deltaTime);
+
+        var targetFov = running.isSprinting ? running.CamFOV + running.CamIncrease : running.CamFOV;
+        running.currentFOV = Mathf.MoveTowards(running.currentFOV, targetFov, running.CamAcceleration*Time.deltaTime);
+
+        cam.fieldOfView = running.currentFOV;
         Vector3 movedirect = orientation.right * Movevalue.x + orientation.forward * Movevalue.y;
-        rb.linearVelocity = new Vector3(movedirect.x * moveSpeed, rb.linearVelocity.y, movedirect.z* moveSpeed); 
+        rb.linearVelocity = new Vector3(movedirect.x * running.currentSpeed, rb.linearVelocity.y, movedirect.z * running.currentSpeed);
     }
 
     bool GroundCheck()
@@ -80,7 +91,34 @@ public class Movement : MonoBehaviour
         return Physics.Raycast(rb.position, Vector3.down, raycastlength);
 
     }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        Debug.Log("Im running");
+        running.isSprinting = context.started || context.performed;
+    }
 }
+
+[Serializable]
+public struct Running
+{
+    [Header("Running-variables:")]
+    public float speed;
+    public float multiplier;
+    public float acceleration;
+
+    [Header("FOV-run-variables")]
+
+    public float CamFOV;
+    public float CamIncrease;
+    public float CamAcceleration;
+
+    [HideInInspector] public bool isSprinting;
+    [HideInInspector] public float currentSpeed;
+
+    [HideInInspector] public float currentFOV;
+}
+
 
 
 
