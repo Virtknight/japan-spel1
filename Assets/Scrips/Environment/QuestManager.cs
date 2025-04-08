@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class QuestManager : MonoBehaviour
 {
     [SerializeField] public Queue<Quest> queue;
-    public Queue<Quest> QuestsInOrder;
+    [SerializeField] private List<Quest> QuestsInOrder;
 
     // Update is called once per frame
     void Start()
@@ -31,9 +31,9 @@ public class QuestManager : MonoBehaviour
     }
     public void CheckForRemoval()
     {
-        if (QuestsInOrder.Peek() != null)
+        if (queue.Peek() != null)
         {
-            Quest first = QuestsInOrder.Peek();
+            Quest first = queue.Peek();
             if(first.finished == true){
                 RemoveFromList();
             }

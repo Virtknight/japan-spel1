@@ -2,12 +2,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Create new find quest", menuName = "Quests/Find-quest")]
 public class Questfind : Quest
 {
-    public Item item;
-    public bool Completed;
-    void Check()
+    [Header("Find specific")]
+    public GameObject item;
+    public bool Completed {get; protected set;}
+    public GameObject questmanager;
+
+    public void Check()
     {
-        if (item.HasBeenPickedUp == true)
+        if (item.GetComponent<Item>().HasBeenPickedUp == true)
         {
+            Completed = true;
+            questmanager.GetComponent<QuestManager>().CheckForRemoval();
 
         }
     }

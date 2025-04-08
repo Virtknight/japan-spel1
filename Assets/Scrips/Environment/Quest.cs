@@ -6,15 +6,14 @@ public class Quest : ScriptableObject
     public enum Questtype
     {
         find,
-        gather,
         explore
     }
-
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public int RequiredAmount { get; protected set; }
+[Header("Default values")]
+   [SerializeField] private string Name;
+    [SerializeField] private string Description;
+    [SerializeField] private int RequiredAmount;
     public bool finished {get; protected set;}
-    public Questtype type;
+    [SerializeField] private Questtype type;
     
 
 
