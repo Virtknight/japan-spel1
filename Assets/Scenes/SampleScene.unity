@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 676387379}
   - component: {fileID: 676387381}
   - component: {fileID: 676387380}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,7 +1028,7 @@ GameObject:
   - component: {fileID: 859073223}
   - component: {fileID: 859073225}
   - component: {fileID: 859073224}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Front-Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1750445c9a92b86428bc7b46105f5464, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 473f07c087b66134eab1713f7d9e52a7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1464,11 +1464,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 676387379}
   - {fileID: 1324027054}
   - {fileID: 2076795918}
   - {fileID: 472047745}
   - {fileID: 859073223}
+  - {fileID: 676387379}
   m_Father: {fileID: 81143866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
